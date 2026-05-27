@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANCMH // SECURE GATEWAY V5</title>
+    <style>
+        body {
+            background-color: #020202;
+            color: #deff9a; /* Cor Verde Menta para diferenciar do banco de dados */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border: 1px solid #deff9a;
+            background-color: #050505;
+            box-shadow: 0 0 25px rgba(222, 255, 154, 0.1);
+        }
+
+        .terminal-header {
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            border-bottom: 1px dashed #deff9a;
+            padding-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+        }
+
+        .btn-submit {
+            background-color: transparent;
+            border: 1px solid #deff9a;
+            color: #deff9a;
+            padding: 8px 15px;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #deff9a;
+            color: #020202;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            min-height: 20px;
+            text-align: center;
+        }
+
+        .error { color: #ff3333; }
+        .success { color: #22c55e; }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <div class="terminal-header">
+        [!] PROTOCOLO DE CONEXÃO RESTRITA<br>
+        ASI_CORP // NODE_CORE_RECOVERY<br>
+        AVISO: TENTATIVAS INCORRETAS SERÃO RASTREADAS
+    </div>
+
+    <form id="loginForm" onsubmit="verifyPassword(event)">
+        <div class="input-group">
+            <label>USER_ID:></label>
+            <input type="text" id="username" class="terminal-input" required autocomplete="off" autofocus>
+        </div>
+        <div class="input-group">
+            <label>ACCESS_KEY:></label>
+            <input type="password" id="password" class="terminal-input" required autocomplete="off">
+        </div>
+        <button type="submit" class="btn-submit">EXECUTAR AUTENTICAÇÃO</button>
+    </form>
+
+    <div id="message"></div>
+</div>
+
+<script>
+    function verifyPassword(event) {
+        event.preventDefault(); // Evita recarregar a página
+        
+        const user = document.getElementById('username').value.trim().toUpperCase();
+        const pass = document.getElementById('password').value.trim().toUpperCase();
+        const msg = document.getElementById('message');
+
+        // A mágica acontece aqui: aceita a senha que eles mineraram nos vídeos
+        if (pass === "ANCMH") {
+            msg.innerHTML = "<span class='success'>[+] ACESSO PERMITIDO. REDIRECIONANDO...</span>";
+            
+            // Espera 1.5 segundos para o jogador ler a mensagem de sucesso e redireciona
+            setTimeout(() => {
+                // Substitua pelo nome do arquivo ou link da sua FASE 6!
+                window.location.href = "fase6_revelacao.html"; 
+            }, 1500);
+        } else {
+            msg.innerHTML = "<span class='error'>[-] ERRO: CHAVE DE ACESSO INVÁLIDA.</span>";
+            // Limpa o campo de senha para o jogador tentar de novo
+            document.getElementById('password').value = "";
+        }
+    }
+</script>
+
+</body>
+</html>

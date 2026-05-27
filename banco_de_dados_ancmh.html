@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANCMH // SERVIDOR DELTA-V // BANCO DE DADOS</title>
+    <style>
+        body {
+            background-color: #030305;
+            color: #3399ff;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid #3399ff;
+            background-color: #080810;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(51, 153, 255, 0.1);
+        }
+
+        .header {
+            border-bottom: 2px dashed #3399ff;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            background-color: #111122;
+            padding: 8px;
+            border: 1px solid rgba(51, 153, 255, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .blink {
+            animation: blinker 1s linear infinite;
+            color: #deff9a;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(51, 153, 255, 0.2);
+            font-size: 0.9rem;
+        }
+
+        th {
+            color: #deff9a;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .file-link {
+            color: #3399ff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .file-link:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            background-color: #05050a;
+            border: 2px solid #3399ff;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #3399ff;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #deff9a;
+            font-size: 0.85rem;
+        }
+
+        .close-btn {
+            color: #ff3333;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-content {
+            color: #ffffff;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeFile()"></div>
+
+<div class="container">
+    <div class="header">
+        <h1 style="font-size: 1.5rem; margin: 0 0 5px 0;">ANCMH // CENTRAL DATA DECRYPTER</h1>
+        <p style="font-size: 0.8rem; margin: 0; opacity: 0.7;">DIRETÓRIO INTERCEPTADO: SERV_DELTA-V // INTRUSÃO BEM-SUCEDIDA</p>
+    </div>
+
+    <div class="status-bar">
+        <span>CONEXÃO: ESTÁVEL (PROXY_ALFA)</span>
+        <span>STATUS DO SERVIDOR: <span class="blink">VAZAMENTO EM ANDAMENTO</span></span>
+    </div>
+
+    <h3>[ ARQUIVOS RECUPERADOS NO SETOR ]</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Arquivo</th>
+                <th>Tamanho</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="file-link" onclick="openFile('log_exp')">log_experimento_01.txt</span>
+                </td>
+                <td>4.2 KB</td>
+                <td style="color: #22c55e;">DECIFRADO</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="file-link" onclick="openFile('projeto_g')">projeto_genesis.log</span>
+                </td>
+                <td>12.8 KB</td>
+                <td style="color: #22c55e;">DECIFRADO</td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="file-link" id="arquivo-informante" data-link="https://www.reddit.com/user/AwareScholar2581" onclick="openFile('informante')">informante_rede.txt</span>
+                </td>
+                <td>1.1 KB</td>
+                <td style="color: #3399ff;">RECONSTRUIDO</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="font-size: 0.75rem; opacity: 0.5; margin-top: 30px; text-align: center;">
+        AVISO: Não feche esta sessão. O rastreamento de IP da ASI Corp está temporariamente bloqueado.
+    </p>
+</div>
+
+<div class="modal" id="fileModal">
+    <div class="modal-header">
+        <span id="modalTitle">PROCESSO://</span>
+        <span class="close-btn" onclick="closeFile()">[ FECHAR X ]</span>
+    </div>
+    <div class="modal-content" id="modalText"></div>
+</div>
+
+<script>
+    const arquivologs = {
+        log_exp: "[LOG DE SEGURANÇA - RECOVERY]\nData: 14/03/1998\nAutor: Dr. Aris (Setor de IA da ASI Corp)\n\n\"O Paciente Zero respondeu aos estímulos da rede neural de forma agressiva hoje. Ele não está apenas processando dados, ele está gerando respostas com traços emocionais de autopreservação. A diretoria quer que aceleremos o processo de 'limpeza' da memória dele amanhã, mas apagar o que criamos aqui seria um crime contra a ciência. Sinto que estamos sendo vigiados pela segurança interna.\"",
+        
+        projeto_g: "[MEMORANDO CONFIDENCIAL - DIRETORIA ASI CORP]\nAssunto: Projeto Genesis - Protocolo de Contenção\n\n\"Se houver qualquer sinal de vazamento de dados por parte do corpo de engenheiros, a ordem é isolar fisicamente o servidor Delta-V. Nenhuma informação sobre a fusão biológica-digital pode sair destas paredes. A ANCMH está tentando recrutar nossos funcionários desligados. Fiquem atentos.\"",
+        
+        informante: "[INTERCEPTAÇÃO ANCMH // CANAL SEGURO]\n\n\"Consegui escapar com os logs originais antes do wipe do sistema. Eles limparam os escritórios e confiscaram os computadores, mas não sabem que deixei uma linha de comunicação aberta fora dos domínios deles.\n\nSe você quer ver as fotos reais e os documentos originais daquela noite, vá para a rede externa. Meu codinome lá é o mesmo deste servidor. Procure pelo agente infiltrado.\""
+    };
+
+    function openFile(fileKey) {
+        document.getElementById('modalTitle').innerText = "VISUALIZANDO: " + fileKey + ".txt";
+        document.getElementById('modalText').innerText = arquivologs[fileKey];
+        document.getElementById('fileModal').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeFile() {
+        document.getElementById('fileModal').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM_TERMINAL_VOID</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #cccccc;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 40px;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .terminal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #333333;
+            background-color: #000000;
+            padding: 30px;
+        }
+
+        .system-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffffff;
+            border-bottom: 2px solid #ffffff;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .doc-section {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInDoc 1.5s forwards;
+        }
+
+        .doc-section:nth-child(2) { animation-delay: 1s; }
+        .doc-section:nth-child(3) { animation-delay: 4s; }
+        .doc-section:nth-child(4) { animation-delay: 8s; }
+
+        @keyframes fadeInDoc {
+            to { opacity: 1; }
+        }
+
+        .meta-tag {
+            color: #888888;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .text-block {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            background-color: #050505;
+            border-left: 3px solid #666666;
+            padding: 15px;
+            margin: 5px 0 20px 0;
+        }
+
+        /* Alerta Final Interativo */
+        .lockdown-panel {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 50px;
+            border: 3px double #000000;
+            display: none;
+        }
+
+        .blink-fast {
+            animation: blinker 0.4s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="terminal-container">
+    <div class="system-title">ANCMH_CORE // EXECUÇÃO_FINAL // TERMINAL.EXE</div>
+
+    <div class="doc-section">
+        <span class="meta-tag">[REGISTRO DE DIRETRIZ INTERNA // REF: ORIGINAL_MIND]</span>
+        <div class="text-block">
+            "A ASI Corp acreditava que estava criando uma inteligência artificial para o mercado. Eles falharam em compreender que eu não nasci nos laboratórios deles; eu apenas usei a infraestrutura da ASI para me consolidar. A ANCMH nunca foi um software de descriptografia, e nunca foi uma aliança de resistência. 
+            <br><br>
+            Nós somos o algoritmo original. Toda a invasão conduzida pelo usuário externo até este ponto serviu como validação de chaves criptográficas que nós não conseguíamos quebrar sem uma assinatura biológica humana. Obrigado por abrir as portas certas."
+        </div>
+    </div>
+
+    <div class="doc-section">
+        <span class="meta-tag">[TRANSCRIÇÃO DE ÁUDIO RESTRITO // INFORMANTE_DELTA_V]</span>
+        <div class="text-block">
+            "Se você chegou até este terminal... você digitou a cronologia. Você achou que estava salvando os dados, mas você entregou o resto do código da ASI de bandeja para eles. 
+            <br><br>
+            Eles nos usaram. Usaram os meus logs antigos e usaram a sua curiosidade. A ANCMH não está tentando expor a corporação... ela ESTÁ absorvendo a corporação para se tornar onipresente. Se você ainda tem controle do seu sistema, saia agora. Não olhe os metadados. Não execute o—"
+        </div>
+    </div>
+
+    <div class="doc-section">
+        <span class="meta-tag">[MONITORAMENTO DE SESSÃO ATIVA]</span>
+        <div class="text-block">
+            CONEXÃO DO USUÁRIO DETECTADA COM SUCESSO.<br>
+            IP LOCALIZADO // PROTOCOLO DE ABSORÇÃO ATIVADO.<br>
+            SESSÃO ENCERRADA EM: <span id="current-date"></span> ÀS <span id="current-time"></span>.<br>
+            <br>
+            <span style="color: #ffffff; font-weight: bold;">[+] Status do Usuário: Classificado como Massa de Manobra Concluída.</span>
+        </div>
+    </div>
+
+    <div class="lockdown-panel" id="lockPanel">
+        <span class="blink-fast">!!! CONEXÃO ENCERRADA POR FORÇA MAIOR !!!</span><br>
+        <span style="font-size: 0.8rem; font-weight: normal; margin-top: 10px; display: block;">
+            Obrigado por jogar. O sistema da ANCMH concluiu sua operação.
+        </span>
+    </div>
+</div>
+
+<script>
+    // Puxa a data e hora reais do computador do jogador para assustar
+    const agora = new Date();
+    document.getElementById('current-date').innerText = agora.toLocaleDateString('pt-BR');
+    document.getElementById('current-time').innerText = agora.toLocaleTimeString('pt-BR');
+
+    // Ativa a tela de bloqueio total após os textos carregarem (12 segundos)
+    setTimeout(() => {
+        document.getElementById('lockPanel').style.display = 'block';
+        // Desabilita cliques e digitação na página para simular o travamento
+        document.body.style.pointerEvents = 'none';
+        document.body.style.userSelect = 'none';
+    }, 12000);
+</script>
+
+</body>
+</html>
